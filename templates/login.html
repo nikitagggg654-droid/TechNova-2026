@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Вхід | TechNova{% endblock %}
+
+{% block content %}
+<section class="card auth-card">
+    <h1>Вхід</h1>
+    <form method="post" action="{{ url_for('login') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-field">
+            <label for="username">Логін</label>
+            <input id="username" name="username" value="{{ username }}" autocomplete="username" required>
+        </div>
+        <div class="form-field">
+            <label for="password">Пароль</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn-block" type="submit">Увійти</button>
+    </form>
+    <p class="muted">Немає облікового запису? <a href="{{ url_for('register') }}">Зареєструватися</a></p>
+</section>
+{% endblock %}

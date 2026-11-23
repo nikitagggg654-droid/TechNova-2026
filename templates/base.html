@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TechNova — інтернет-магазин сучасних гаджетів.">
+    <title>{% block title %}TechNova — Світ сучасних гаджетів{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='extra.css') }}">
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Перейти до вмісту</a>
+
+    <header class="header">
+        <a class="logo" href="{{ url_for('index') }}" aria-label="TechNova — на головну">TECH<span>NOVA</span></a>
+
+        <button type="button" class="burger" id="burger" aria-label="Відкрити меню"
+                aria-expanded="false" aria-controls="mainMenu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav class="menu" id="mainMenu" aria-label="Головна навігація">
+            <a href="{{ url_for('index') }}">Головна</a>
+            <a href="{{ url_for('index') }}#catalog">Каталог</a>
+            <a href="{{ url_for('index') }}#contacts">Контакти</a>
+            {% if session.get('is_admin') %}
+                <a href="{{ url_for('admin_panel') }}">Адмін</a>
+            {% endif %}
+            {% if session.get('user_id') %}
+                <form class="logout-form" method="post" action="{{ url_for('logout') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="link-button">Вийти ({{ session['username'] }})</button>
+                </form>
+            {% else %}
+                <a href="{{ url_for('login') }}">Вхід</a>
+                <a href="{{ url_for('register') }}">Реєстрація</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-area" role="status">
+            {% for category, text in messages %}
+                <p class="flash flash-{{ category }}">{{ text }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <main id="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer" id="contacts">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h2 class="footer-title">TechNova</h2>
+                <p>Світ сучасних гаджетів для роботи, навчання та розваг.</p>
+            </div>
+            <nav class="footer-column" aria-label="Навігація у підвалі">
+                <h2 class="footer-title">Навігація</h2>
+                <a href="{{ url_for('index') }}">Головна</a>
+                <a href="{{ url_for('index') }}#catalog">Каталог</a>
+                <a href="{{ url_for('index') }}#contacts">Контакти</a>
+            </nav>
+            <div class="footer-column">
+                <h2 class="footer-title">Допомога</h2>
+                <p>Оплата</p>
+                <p>Доставка</p>
+                <p>Гарантія та повернення</p>
+            </div>
+            <div class="footer-column">
+                <h2 class="footer-title">Зв'язок з нами</h2>
+                <a href="tel:+380963663005">(096) 366 30 05</a>
+                <a href="mailto:info@technova.ua">info@technova.ua</a>
+                <h2 class="footer-title social-title">Розробник</h2>
+                <a href="https://github.com/YOUR-LOGIN/YOUR-REPO" target="_blank" rel="noopener noreferrer">GitHub-репозиторій</a>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>© 2026 TechNova. Усі права захищені.</p></div>
+    </footer>
+</body>
+</html>

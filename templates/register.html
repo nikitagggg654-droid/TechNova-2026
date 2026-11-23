@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Реєстрація | TechNova{% endblock %}
+
+{% block content %}
+<section class="card auth-card">
+    <h1>Реєстрація</h1>
+    <form method="post" action="{{ url_for('register') }}" id="registerForm">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-field">
+            <label for="username">Логін (латиниця, цифри, _)</label>
+            <input id="username" name="username" value="{{ username }}" minlength="3" maxlength="30"
+                   pattern="[A-Za-z0-9_]+" autocomplete="username" required>
+        </div>
+        <div class="form-field">
+            <label for="password">Пароль (від 8 символів)</label>
+            <input id="password" name="password" type="password" minlength="8" autocomplete="new-password" required>
+        </div>
+        <div class="form-field">
+            <label for="confirm">Повторіть пароль</label>
+            <input id="confirm" name="confirm" type="password" minlength="8" autocomplete="new-password" required>
+        </div>
+        <button class="btn btn-block" type="submit">Зареєструватися</button>
+    </form>
+    <p class="muted">Вже є обліковий запис? <a href="{{ url_for('login') }}">Увійти</a></p>
+</section>
+{% endblock %}

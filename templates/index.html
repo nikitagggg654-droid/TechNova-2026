@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero" id="home" aria-labelledby="hero-title">
+    <div class="hero-content">
+        <p class="small-title">TECHNOVA</p>
+        <h1 id="hero-title">Світ сучасних гаджетів</h1>
+        <p class="hero-text">Сучасні технології для роботи, навчання та розваг</p>
+        <a href="#catalog" class="hero-button">Переглянути гаджети</a>
+    </div>
+</section>
+
+<section class="categories" aria-labelledby="categories-title">
+    <h2 id="categories-title">Популярні категорії</h2>
+    <div class="category-container">
+        <article class="category-card">
+            <div class="category-icon" aria-hidden="true">📱</div>
+            <h3>Смартфони</h3>
+            <p>Сучасні смартфони для роботи та спілкування</p>
+            <a href="{{ url_for('index', category='Смартфони') }}#catalog">Переглянути →</a>
+        </article>
+        <article class="category-card">
+            <div class="category-icon" aria-hidden="true">💻</div>
+            <h3>Ноутбуки</h3>
+            <p>Потужні ноутбуки для навчання та роботи</p>
+            <a href="{{ url_for('index', category='Ноутбуки') }}#catalog">Переглянути →</a>
+        </article>
+        <article class="category-card">
+            <div class="category-icon" aria-hidden="true">🎮</div>
+            <h3>PlayStation</h3>
+            <p>Ігрові приставки та аксесуари для геймерів</p>
+            <a href="{{ url_for('index', category='PlayStation') }}#catalog">Переглянути →</a>
+        </article>
+        <article class="category-card">
+            <div class="category-icon" aria-hidden="true">🎧</div>
+            <h3>Аксесуари</h3>
+            <p>Навушники, зарядні пристрої та інші гаджети</p>
+            <a href="{{ url_for('index', category='Аксесуари') }}#catalog">Переглянути →</a>
+        </article>
+    </div>
+</section>
+
+<section class="products" id="catalog" aria-labelledby="catalog-title">
+    <h2 class="catalog-main-title" id="catalog-title">Каталог товарів</h2>
+
+    <div class="category-filters" role="group" aria-label="Фільтр за категорією">
+        <a class="category-filter {% if not selected %}active{% endif %}"
+           href="{{ url_for('index', q=query or None) }}#catalog">Усі товари</a>
+        {% for c in categories %}
+        <a class="category-filter {% if selected == c.name %}active{% endif %}"
+           href="{{ url_for('index', category=c.name, q=query or None) }}#catalog">{{ c.name }}</a>
+        {% endfor %}
+    </div>
+
+    <form class="catalog-search" method="get" action="{{ url_for('index') }}#catalog" role="search">
+        <input type="search" name="q" value="{{ query }}" placeholder="Пошук гаджетів..."
+               aria-label="Пошук товарів" autocomplete="off">
+        {% if selected %}<input type="hidden" name="category" value="{{ selected }}">{% endif %}
+        <button type="submit">Знайти</button>
+        <a class="clear-link" href="{{ url_for('index') }}#catalog">Очистити</a>
+    </form>
+
+    <p id="searchMessage" role="status">
+        {% if query or selected %}
+            {% if total %}Знайдено товарів: {{ total }}{% else %}Товарів не знайдено. Спробуйте інший пошук.{% endif %}
+        {% elif not total %}
+            У каталозі поки немає товарів.
+        {% endif %}
+    </p>
+
+    {% for c in categories %}
+        {% set items = groups.get(c.name) %}
+        {% if items %}
+        <h3 class="catalog-title" id="cat-{{ c.id }}">{{ c.name }}</h3>
+        <div class="product-container">
+            {% for p in items %}
+            <article class="product-card">
+                <div class="product-image">
+                    {% if p.image %}
+                    <img src="{{ url_for('static', filename=p.image) }}" alt="{{ p.name }}"
+                         loading="lazy" width="320" height="320">
+                    {% endif %}
+                </div>
+                <h4>{{ p.name }}</h4>
+                <p>{{ p.description or 'Опис відсутній' }}</p>
+                <strong>{{ p.price|price }}</strong>
+                <a href="{{ url_for('product_page', product_id=p.id) }}">Детальніше</a>
+            </article>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endfor %}
+</section>
+{% endblock %}

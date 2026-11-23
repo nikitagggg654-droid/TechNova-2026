@@ -1,0 +1,59 @@
+/* Стилі для сторінок Flask-версії: повідомлення, форми, таблиця, модальне вікно */
+.flash-area { max-width: 1000px; margin: 20px auto 0; padding: 0 20px; }
+.flash { font-size: 16px; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; text-align: left; }
+.flash-success { background: #dcfce7; color: #14532d; }
+.flash-error { background: #fee2e2; color: #7f1d1d; }
+
+.link-button { background: none; border: 0; padding: 8px 0; color: #fff; font: inherit; font-size: 16px; cursor: pointer; transition: color .3s; }
+.link-button:hover { color: var(--accent); }
+.logout-form { display: inline; margin: 0; }
+
+.category-filter { display: inline-block; text-decoration: none; }
+.catalog-search .clear-link { display: inline-flex; align-items: center; padding: 0 12px; color: var(--primary); font-weight: bold; text-decoration: none; }
+.catalog-search button { min-height: 48px; }
+
+.card { background: #fff; border-radius: 16px; padding: 25px; box-shadow: 0 5px 25px rgba(0,0,0,.07); text-align: left; }
+.page-wrap { max-width: 1000px; margin: 40px auto; }
+.auth-card { max-width: 450px; margin: 50px auto; }
+.auth-card.wide { max-width: 640px; }
+.auth-card h1 { font-size: 32px; }
+.muted { color: var(--muted); font-size: 16px; }
+.top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+
+.form-field label { display: block; margin: 16px 0 6px; font-weight: bold; color: var(--navy); }
+.form-field input, .form-field select, .form-field textarea {
+    display: block; width: 100%; padding: 12px; border: 1px solid #94a3b8;
+    border-radius: 7px; font: inherit; background: #fff;
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--primary); }
+.form-field input:user-invalid { border-color: #b91c1c; }
+
+.btn { display: inline-block; padding: 10px 16px; border: 0; border-radius: 7px; background: var(--primary); color: #fff;
+       font: inherit; font-size: 15px; font-weight: bold; text-decoration: none; text-align: center; cursor: pointer; transition: background-color .3s; }
+.btn:hover { background: var(--navy); }
+.btn-danger { background: #b91c1c; }
+.btn-danger:hover { background: #7f1d1d; }
+.btn-secondary { background: #475569; }
+.btn-block { display: block; width: 100%; margin-top: 20px; }
+
+.table-wrap { overflow-x: auto; margin-top: 20px; }
+.admin-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.admin-table th, .admin-table td { padding: 10px; border-bottom: 1px solid var(--border); text-align: left; font-size: 16px; }
+.admin-table .thumb { width: 56px; height: 56px; object-fit: contain; background: #f1f5f9; border-radius: 6px; }
+.admin-table .actions { white-space: nowrap; }
+.admin-table .actions form { display: inline-block; }
+.admin-table .actions .btn { margin-right: 8px; }
+.admin-table form { margin: 0; }
+
+.modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center;
+                 padding: 20px; background: rgba(0,0,0,.6); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.modal-box { width: 420px; max-width: 100%; padding: 28px; background: #fff; border-radius: 16px; text-align: left; }
+.modal-box h2 { color: var(--navy); margin-bottom: 12px; }
+.modal-box p { font-size: 17px; color: var(--muted); }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 22px; flex-wrap: wrap; }
+body.modal-open { overflow: hidden; }
+
+@media (max-width: 768px) {
+    .logout-form { display: block; }
+    .link-button { width: 100%; text-align: left; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} | TechNova{% endblock %}
+
+{% block content %}
+<article class="product-page">
+    <div class="product-page-image">
+        {% if product.image %}
+        <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+        {% endif %}
+    </div>
+    <div class="product-page-info">
+        <h1>{{ product.name }}</h1>
+        <p class="product-description">{{ product.description or 'Опис товару поки не додано.' }}</p>
+        <h2 class="product-page-price">{{ product.price|price }}</h2>
+
+        <h3>Характеристики</h3>
+        <ul class="product-specs">
+            <li><span>Категорія:</span> {{ product.category }}</li>
+            {% for spec in (product.description or '').split('•') if spec.strip() %}
+            <li>{{ spec.strip() }}</li>
+            {% endfor %}
+        </ul>
+
+        <a class="back-button" href="{{ url_for('index') }}#catalog">← Повернутися до каталогу</a>
+    </div>
+</article>
+{% endblock %}

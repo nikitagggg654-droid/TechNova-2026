@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Адмін-панель | TechNova{% endblock %}
+
+{% block content %}
+<section class="card page-wrap">
+    <div class="top-bar">
+        <div>
+            <h1>Адмін-панель</h1>
+            <p class="muted">Усього товарів: {{ products|length }}</p>
+        </div>
+        <a class="btn" href="{{ url_for('product_new') }}">+ Додати товар</a>
+    </div>
+
+    <div class="table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr><th>Фото</th><th>Назва</th><th>Категорія</th><th>Ціна</th><th>Дії</th></tr>
+            </thead>
+            <tbody>
+            {% for p in products %}
+                <tr>
+                    <td>{% if p.image %}<img class="thumb" src="{{ url_for('static', filename=p.image) }}" alt="" loading="lazy" width="56" height="56">{% endif %}</td>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.category }}</td>
+                    <td>{{ p.price|price }}</td>
+                    <td class="actions">
+                        <a class="btn" href="{{ url_for('product_edit', product_id=p.id) }}">Редагувати</a>
+                        <form class="delete-form" method="post"
+                              action="{{ url_for('product_delete', product_id=p.id) }}"
+                              data-name="{{ p.name }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button class="btn btn-danger" type="submit">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5">Товарів поки немає.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true"
+     aria-labelledby="confirmTitle" hidden>
+    <div class="modal-box">
+        <h2 id="confirmTitle">Підтвердіть видалення</h2>
+        <p id="confirmText"></p>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" data-modal-cancel>Скасувати</button>
+            <button type="button" class="btn btn-danger" data-modal-confirm>Видалити</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

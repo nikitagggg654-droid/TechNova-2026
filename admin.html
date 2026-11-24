@@ -1,0 +1,933 @@
+
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TechNova — Адмін-панель</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 15px;
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            color: #172554;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .panel {
+            margin-bottom: 25px;
+            padding: 25px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px #00000012;
+        }
+
+        h1, h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            display: block;
+            width: 100%;
+            margin-top: 7px;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font: inherit;
+        }
+
+        button {
+            padding: 12px 16px;
+            border: 0;
+            border-radius: 7px;
+            background: #0284c7;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .main-button {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .cancel-button {
+            width: 100%;
+            margin-top: 10px;
+            background: #64748b;
+        }
+
+        .logout-button {
+            background: #dc2626;
+        }
+
+        .edit-button {
+            background: #0284c7;
+        }
+
+        .delete-button {
+            background: #dc2626;
+        }
+
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .product {
+            min-width: 0;
+            padding: 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .product h3 {
+            margin-top: 0;
+        }
+
+        .product-image {
+            display: block;
+            width: 100%;
+            height: 180px;
+            margin-bottom: 12px;
+            object-fit: contain;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .product-description {
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .actions button {
+            flex: 1;
+        }
+
+        #message, #loginMessage {
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        a {
+            color: #0284c7;
+        }
+
+        .muted {
+            color: #64748b;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .login-panel {
+            max-width: 450px;
+            margin: 60px auto;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 500px) {
+            .panel {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="container">
+
+    <!-- ВХОД В АДМИН-ПАНЕЛЬ -->
+
+    <section id="loginSection" class="panel login-panel" hidden>
+
+        <h1>TechNova</h1>
+        <h2>Вхід адміністратора</h2>
+
+        <form id="loginForm">
+
+            <label for="password">Пароль адміністратора</label>
+
+            <input
+                id="password"
+                type="password"
+                placeholder="Введіть пароль"
+                autocomplete="current-password"
+                required
+            >
+
+            <button
+                id="loginButton"
+                class="main-button"
+                type="submit"
+            >
+                Увійти
+            </button>
+
+        </form>
+
+        <p id="loginMessage" role="status" aria-live="polite"></p>
+
+        <p><a href="/">Повернутися на сайт</a></p>
+
+    </section>
+
+
+    <!-- ОСНОВНА АДМІН-ПАНЕЛЬ -->
+
+    <div id="adminContent" hidden>
+
+        <section class="panel">
+
+            <div class="top-bar">
+                <div>
+                    <h1>TechNova — Адмін-панель</h1>
+                    <p class="muted">Керування каталогом товарів</p>
+                </div>
+
+                <button id="logoutButton" class="logout-button" type="button">
+                    Вийти
+                </button>
+            </div>
+
+            <hr>
+
+            <h2 id="formTitle">Додавання товару</h2>
+
+            <form id="productForm">
+
+                <label for="name">Назва товару</label>
+                <input
+                    id="name"
+                    name="name"
+                    maxlength="150"
+                    required
+                >
+
+                <label for="category">Категорія</label>
+                <select id="category" name="category" required>
+                    <option value="">Завантаження категорій...</option>
+                </select>
+
+                <label for="price">Ціна (грн)</label>
+                <input
+                    id="price"
+                    name="price"
+                    type="number"
+                    min="0"
+                    max="100000000"
+                    step="0.01"
+                    required
+                >
+
+                <label for="description">Опис і характеристики</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="5"
+                    maxlength="2000"
+                ></textarea>
+
+                <label for="image">Шлях до зображення</label>
+                <input
+                    id="image"
+                    name="image"
+                    placeholder="images/smartphones/iphone.jpg"
+                >
+
+                <button
+                    id="submitButton"
+                    class="main-button"
+                    type="submit"
+                    disabled
+                >
+                    Додати товар
+                </button>
+
+                <button
+                    id="cancelButton"
+                    class="cancel-button"
+                    type="button"
+                    hidden
+                >
+                    Скасувати редагування
+                </button>
+
+            </form>
+
+            <p id="message" role="status" aria-live="polite"></p>
+
+            <p><a href="/">Повернутися на сайт</a></p>
+
+            <p>
+                <a href="/api/products" target="_blank">
+                    Переглянути товари в базі
+                </a>
+            </p>
+
+        </section>
+
+
+        <!-- СПИСОК ТОВАРІВ -->
+
+        <section class="panel">
+
+            <h2>Керування товарами</h2>
+
+            <p id="productCount" class="muted">
+                Завантаження товарів...
+            </p>
+
+            <button id="refreshButton" type="button">
+                Оновити список
+            </button>
+
+            <div
+                id="productList"
+                class="product-list"
+                style="margin-top: 20px"
+            ></div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    const loginSection = document.getElementById("loginSection");
+    const adminContent = document.getElementById("adminContent");
+
+    const loginForm = document.getElementById("loginForm");
+    const loginButton = document.getElementById("loginButton");
+    const loginMessage = document.getElementById("loginMessage");
+
+    const logoutButton = document.getElementById("logoutButton");
+
+    const form = document.getElementById("productForm");
+    const message = document.getElementById("message");
+
+    const submitButton = document.getElementById("submitButton");
+    const cancelButton = document.getElementById("cancelButton");
+
+    const categorySelect = document.getElementById("category");
+    const formTitle = document.getElementById("formTitle");
+
+    const productList = document.getElementById("productList");
+    const productCount = document.getElementById("productCount");
+    const refreshButton = document.getElementById("refreshButton");
+
+    let editingId = null;
+    let categoriesLoaded = false;
+    let products = [];
+
+
+    // ==========================================
+    // ЗАПРОСЫ К СЕРВЕРУ
+    // ==========================================
+
+    async function requestJSON(url, options = {}) {
+
+        const response = await fetch(url, options);
+
+        let result;
+
+        try {
+            result = await response.json();
+        } catch {
+            throw new Error("Сервер повернув некоректну відповідь.");
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                result.error || result.message || "Помилка запиту."
+            );
+        }
+
+        return result;
+    }
+
+
+    // ==========================================
+    // ПОКАЗ ЭКРАНОВ
+    // ==========================================
+
+    function showLogin() {
+        loginSection.hidden = false;
+        adminContent.hidden = true;
+    }
+
+    function showAdmin() {
+        loginSection.hidden = true;
+        adminContent.hidden = false;
+    }
+
+
+    // ==========================================
+    // ПРОВЕРКА АВТОРИЗАЦИИ
+    // ==========================================
+
+    async function checkSession() {
+
+        try {
+
+            const result = await requestJSON("/api/session");
+
+            if (result.logged_in) {
+
+                showAdmin();
+
+                await initializeAdmin();
+
+            } else {
+
+                showLogin();
+
+            }
+
+        } catch (error) {
+
+            showLogin();
+
+            loginMessage.textContent =
+                "Помилка з'єднання із сервером: " + error.message;
+
+        }
+    }
+
+
+    // ==========================================
+    // ВХОД
+    // ==========================================
+
+    loginForm.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        loginButton.disabled = true;
+        loginMessage.textContent = "Перевірка пароля...";
+
+        try {
+
+            const result = await requestJSON("/api/login", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    password: document.getElementById("password").value
+                })
+
+            });
+
+            loginForm.reset();
+
+            loginMessage.textContent = "";
+
+            showAdmin();
+
+            await initializeAdmin();
+
+        } catch (error) {
+
+            loginMessage.textContent = error.message;
+
+        } finally {
+
+            loginButton.disabled = false;
+
+        }
+
+    });
+
+
+    // ==========================================
+    // ВЫХОД
+    // ==========================================
+
+    logoutButton.addEventListener("click", async () => {
+
+        logoutButton.disabled = true;
+
+        try {
+
+            await requestJSON("/api/logout", {
+                method: "POST"
+            });
+
+            resetForm();
+
+            products = [];
+            productList.replaceChildren();
+
+            showLogin();
+
+            loginMessage.textContent = "Ви вийшли з адмін-панелі.";
+
+        } catch (error) {
+
+            message.textContent = error.message;
+
+        } finally {
+
+            logoutButton.disabled = false;
+
+        }
+
+    });
+
+
+    // ==========================================
+    // ЗАГРУЗКА КАТЕГОРИЙ
+    // ==========================================
+
+    async function loadCategories() {
+
+        const categories = await requestJSON("/api/categories");
+
+        categorySelect.replaceChildren();
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Оберіть категорію";
+
+        categorySelect.appendChild(placeholder);
+
+        for (const category of categories) {
+
+            const option = document.createElement("option");
+
+            option.value = category.name;
+            option.textContent = category.name;
+
+            categorySelect.appendChild(option);
+
+        }
+
+        if (!categories.length) {
+            throw new Error("У базі немає категорій.");
+        }
+
+        categoriesLoaded = true;
+        submitButton.disabled = false;
+
+    }
+
+
+    // ==========================================
+    // СОЗДАНИЕ HTML-ЭЛЕМЕНТОВ
+    // ==========================================
+
+    function createElement(tag, className, text) {
+
+        const element = document.createElement(tag);
+
+        if (className) {
+            element.className = className;
+        }
+
+        if (text !== undefined) {
+            element.textContent = text;
+        }
+
+        return element;
+
+    }
+
+
+    // ==========================================
+    // ОТОБРАЖЕНИЕ ТОВАРОВ
+    // ==========================================
+
+    function renderProducts() {
+
+        productList.replaceChildren();
+
+        productCount.textContent =
+            "Усього товарів: " + products.length;
+
+        if (!products.length) {
+
+            productList.appendChild(
+                createElement("p", "muted", "Товарів поки немає.")
+            );
+
+            return;
+
+        }
+
+        for (const product of products) {
+
+            const card = createElement("article", "product");
+
+            if (product.image) {
+
+                const img = createElement("img", "product-image");
+
+                img.alt = product.name || "Зображення товару";
+                img.loading = "lazy";
+                img.src = "/" + product.image.replace(/^\/+/, "");
+
+                img.addEventListener("error", () => {
+                    img.remove();
+                });
+
+                card.appendChild(img);
+
+            }
+
+            card.appendChild(
+                createElement("h3", "", product.name)
+            );
+
+            card.appendChild(
+                createElement(
+                    "p",
+                    "",
+                    "Категорія: " + (product.category || "—")
+                )
+            );
+
+            card.appendChild(
+                createElement(
+                    "p",
+                    "",
+                    "Ціна: " + Number(product.price || 0).toLocaleString("uk-UA") + " грн"
+                )
+            );
+
+            card.appendChild(
+                createElement(
+                    "p",
+                    "product-description",
+                    product.description || "Опис відсутній"
+                )
+            );
+
+            const actions = createElement("div", "actions");
+
+            const editButton = createElement(
+                "button",
+                "edit-button",
+                "Редагувати"
+            );
+
+            editButton.type = "button";
+
+            editButton.addEventListener("click", () => {
+                startEditing(product);
+            });
+
+            const deleteButton = createElement(
+                "button",
+                "delete-button",
+                "Видалити"
+            );
+
+            deleteButton.type = "button";
+
+            deleteButton.addEventListener("click", () => {
+                deleteProduct(product);
+            });
+
+            actions.append(editButton, deleteButton);
+
+            card.appendChild(actions);
+
+            productList.appendChild(card);
+
+        }
+
+    }
+
+
+    // ==========================================
+    // ЗАГРУЗКА ТОВАРОВ
+    // ==========================================
+
+    async function loadProducts() {
+
+        refreshButton.disabled = true;
+
+        productCount.textContent = "Завантаження товарів...";
+
+        try {
+
+            products = await requestJSON("/api/products");
+
+            renderProducts();
+
+        } catch (error) {
+
+            productCount.textContent =
+                "Не вдалося завантажити товари: " + error.message;
+
+        } finally {
+
+            refreshButton.disabled = false;
+
+        }
+
+    }
+
+
+    // ==========================================
+    // РЕДАКТИРОВАНИЕ
+    // ==========================================
+
+    function startEditing(product) {
+
+        editingId = product.id;
+
+        form.elements.name.value = product.name || "";
+        form.elements.category.value = product.category || "";
+        form.elements.price.value = product.price ?? "";
+        form.elements.description.value = product.description || "";
+        form.elements.image.value = product.image || "";
+
+        formTitle.textContent =
+            "Редагування товару №" + product.id;
+
+        submitButton.textContent = "Зберегти зміни";
+
+        cancelButton.hidden = false;
+
+        message.textContent =
+            "Змінюй потрібні поля та збережи зміни.";
+
+        form.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+
+    // ==========================================
+    // СБРОС ФОРМЫ
+    // ==========================================
+
+    function resetForm() {
+
+        editingId = null;
+
+        form.reset();
+
+        formTitle.textContent = "Додавання товару";
+
+        submitButton.textContent = "Додати товар";
+
+        cancelButton.hidden = true;
+
+    }
+
+
+    cancelButton.addEventListener("click", () => {
+
+        resetForm();
+
+        message.textContent = "Редагування скасовано.";
+
+    });
+
+
+    // ==========================================
+    // ДОБАВЛЕНИЕ И ОБНОВЛЕНИЕ ТОВАРА
+    // ==========================================
+
+    form.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        if (!categoriesLoaded) {
+
+            message.textContent = "Категорії ще не завантажені.";
+
+            return;
+
+        }
+
+        submitButton.disabled = true;
+        cancelButton.disabled = true;
+
+        const data = Object.fromEntries(
+            new FormData(form).entries()
+        );
+
+        const wasEditing = editingId !== null;
+
+        const url = wasEditing
+            ? "/api/products/" + editingId
+            : "/api/products";
+
+        const method = wasEditing ? "PUT" : "POST";
+
+        message.textContent = wasEditing
+            ? "Збереження змін..."
+            : "Додавання товару...";
+
+        try {
+
+            const result = await requestJSON(url, {
+
+                method: method,
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+
+            });
+
+            message.textContent =
+                result.message || "Операція виконана.";
+
+            resetForm();
+
+            await loadProducts();
+
+        } catch (error) {
+
+            message.textContent = "Помилка: " + error.message;
+
+        } finally {
+
+            submitButton.disabled = false;
+            cancelButton.disabled = false;
+
+        }
+
+    });
+
+
+    // ==========================================
+    // УДАЛЕНИЕ ТОВАРА
+    // ==========================================
+
+    async function deleteProduct(product) {
+
+        const confirmed = confirm(
+            'Видалити товар "' + product.name + '" з бази даних?'
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        message.textContent = "Видалення товару...";
+
+        try {
+
+            const result = await requestJSON(
+                "/api/products/" + product.id,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            if (editingId === product.id) {
+                resetForm();
+            }
+
+            message.textContent =
+                result.message || "Товар видалено.";
+
+            await loadProducts();
+
+        } catch (error) {
+
+            message.textContent = "Помилка: " + error.message;
+
+        }
+
+    }
+
+
+    // ==========================================
+    // ОБНОВЛЕНИЕ СПИСКА
+    // ==========================================
+
+    refreshButton.addEventListener("click", loadProducts);
+
+
+    // ==========================================
+    // ЗАПУСК АДМИН-ПАНЕЛИ
+    // ==========================================
+
+    async function initializeAdmin() {
+
+        message.textContent = "";
+
+        try {
+
+            await loadCategories();
+
+            await loadProducts();
+
+        } catch (error) {
+
+            message.textContent =
+                "Помилка завантаження: " + error.message;
+
+            submitButton.disabled = true;
+
+        }
+
+    }
+
+
+    // Проверяем вход при открытии страницы
+
+    checkSession();
+
+</script>
+
+</body>
+</html>

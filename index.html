@@ -1,0 +1,557 @@
+
+
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNova — Світ сучасних гаджетів</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <!-- ШАПКА -->
+    <header class="header">
+        <div class="logo">
+            TECH<span>NOVA</span>
+        </div>
+
+        <nav class="menu">
+            <a href="#home">Головна</a>
+            <a href="#catalog">Каталог</a>
+            <a href="#contacts">Контакти</a>
+            <a href="/admin">Адмін</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- ГОЛОВНИЙ ЕКРАН -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <p class="small-title">TECHNOVA</p>
+
+                <h1>Світ сучасних гаджетів</h1>
+
+                <p class="hero-text">
+                    Сучасні технології для роботи, навчання та розваг
+                </p>
+
+                <a href="#catalog" class="hero-button">
+                    Переглянути гаджети
+                </a>
+            </div>
+        </section>
+
+        <!-- КАТЕГОРІЇ -->
+        <section class="categories">
+            <h2>Популярні категорії</h2>
+
+            <div class="category-container">
+
+                <div class="category-card">
+                    <div class="category-icon">📱</div>
+                    <h3>Смартфони</h3>
+                    <p>Сучасні смартфони для роботи та спілкування</p>
+                    <a href="#smartphones">Переглянути →</a>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">💻</div>
+                    <h3>Ноутбуки</h3>
+                    <p>Потужні ноутбуки для навчання та роботи</p>
+                    <a href="#laptops">Переглянути →</a>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">🎮</div>
+                    <h3>PlayStation</h3>
+                    <p>Ігрові приставки та аксесуари для геймерів</p>
+                    <a href="#playstation">Переглянути →</a>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">🎧</div>
+                    <h3>Аксесуари</h3>
+                    <p>Навушники, зарядні пристрої та інші гаджети</p>
+                    <a href="#accessories">Переглянути →</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- КАТАЛОГ -->
+        <section class="products" id="catalog">
+
+            <h2 class="catalog-main-title">Каталог товарів</h2>
+
+            <!-- ФІЛЬТРИ -->
+            <div class="category-filters">
+
+                <button type="button"
+                        class="category-filter active"
+                        data-category="all">
+                    Усі товари
+                </button>
+
+                <button type="button"
+                        class="category-filter"
+                        data-category="Смартфони">
+                    Смартфони
+                </button>
+
+                <button type="button"
+                        class="category-filter"
+                        data-category="Ноутбуки">
+                    Ноутбуки
+                </button>
+
+                <button type="button"
+                        class="category-filter"
+                        data-category="PlayStation">
+                    PlayStation
+                </button>
+
+                <button type="button"
+                        class="category-filter"
+                        data-category="Аксесуари">
+                    Аксесуари
+                </button>
+
+            </div>
+
+            <!-- ПОШУК -->
+            <div class="catalog-search">
+
+                <input
+                    type="search"
+                    id="productSearch"
+                    placeholder="Пошук гаджетів..."
+                    aria-label="Пошук товарів"
+                >
+
+                <button type="button" id="clearSearch">
+                    Очистити
+                </button>
+
+            </div>
+
+            <p id="searchMessage"
+               role="status"
+               aria-live="polite"></p>
+
+            <!-- СМАРТФОНИ -->
+            <h2 class="catalog-title" id="smartphones">
+                Смартфони
+            </h2>
+
+            <div class="product-container"
+                 data-category="Смартфони">
+            </div>
+
+            <!-- НОУТБУКИ -->
+            <h2 class="catalog-title" id="laptops">
+                Ноутбуки
+            </h2>
+
+            <div class="product-container"
+                 data-category="Ноутбуки">
+            </div>
+
+            <!-- PLAYSTATION -->
+            <h2 class="catalog-title" id="playstation">
+                PlayStation
+            </h2>
+
+            <div class="product-container"
+                 data-category="PlayStation">
+            </div>
+
+            <!-- АКСЕСУАРИ -->
+            <h2 class="catalog-title" id="accessories">
+                Аксесуари
+            </h2>
+
+            <div class="product-container"
+                 data-category="Аксесуари">
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ПІДВАЛ -->
+    <footer class="footer" id="contacts">
+
+        <div class="footer-container">
+
+            <div class="footer-column">
+                <h3>TechNova</h3>
+
+                <p>
+                    Світ сучасних гаджетів для роботи,
+                    навчання та розваг.
+                </p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Навігація</h3>
+
+                <a href="#home">Головна</a>
+                <a href="#catalog">Каталог</a>
+                <a href="#contacts">Контакти</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>Допомога</h3>
+
+                <a href="#">Оплата</a>
+                <a href="#">Доставка</a>
+                <a href="#">Гарантія та повернення</a>
+                <a href="#">Про нас</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>Зв'язок з нами</h3>
+
+                <a href="tel:+380963663005">
+                    (096) 366 30 05
+                </a>
+
+                <a href="mailto:info@technova.ua">
+                    info@technova.ua
+                </a>
+
+                <h3 class="social-title">
+                    Залишайся з нами
+                </h3>
+
+                <p>
+                    Будьте в курсі новинок та сучасних технологій.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 TechNova. Усі права захищені.</p>
+        </div>
+
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+        // ЕЛЕМЕНТИ СТОРІНКИ
+        const searchInput =
+            document.getElementById("productSearch");
+
+        const clearSearchButton =
+            document.getElementById("clearSearch");
+
+        const searchMessage =
+            document.getElementById("searchMessage");
+
+        const categoryButtons =
+            document.querySelectorAll(".category-filter");
+
+        const productContainers =
+            document.querySelectorAll(".product-container");
+
+        let selectedCategory = "all";
+
+
+        // ФОРМАТУВАННЯ ЦІНИ
+        function formatPrice(price) {
+            const value = Number(price);
+
+            if (!Number.isFinite(value)) {
+                return "Ціну не вказано";
+            }
+
+            return value.toLocaleString("uk-UA") + " грн";
+        }
+
+
+        // СТВОРЕННЯ КАРТКИ ТОВАРУ
+        function createProductCard(product) {
+
+            const card = document.createElement("div");
+
+            card.className = "product-card";
+
+            card.dataset.databaseId = String(product.id);
+            card.dataset.name = product.name || "";
+            card.dataset.info = product.description || "";
+
+            // ЗОБРАЖЕННЯ
+            const imageBox = document.createElement("div");
+
+            imageBox.className = "product-image";
+
+            if (product.image) {
+
+                const img = document.createElement("img");
+
+                const imagePath = String(product.image)
+                    .replace(/^\/+/, "");
+
+                img.src = "/" + imagePath;
+                img.alt = product.name || "Гаджет";
+                img.loading = "lazy";
+
+                img.onerror = function () {
+                    this.style.display = "none";
+                };
+
+                imageBox.appendChild(img);
+            }
+
+            // НАЗВА
+            const title = document.createElement("h3");
+
+            title.textContent = product.name || "Без назви";
+
+            // ОПИС
+            const description = document.createElement("p");
+
+            description.textContent =
+                product.description || "Опис відсутній";
+
+            // ЦІНА
+            const price = document.createElement("strong");
+
+            price.textContent = formatPrice(product.price);
+
+            // КНОПКА
+            const button = document.createElement("button");
+
+            button.type = "button";
+            button.textContent = "Детальніше";
+
+            button.addEventListener("click", function () {
+
+                window.location.href =
+                    "/product/" + encodeURIComponent(product.id);
+
+            });
+
+            card.append(
+                imageBox,
+                title,
+                description,
+                price,
+                button
+            );
+
+            return card;
+        }
+
+
+        // ЗАВАНТАЖЕННЯ ТОВАРІВ ІЗ БАЗИ ДАНИХ
+        async function loadDatabaseProducts() {
+
+            searchMessage.textContent = "Завантаження товарів...";
+
+            try {
+
+                const response = await fetch("/api/products");
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Помилка сервера: " + response.status
+                    );
+                }
+
+                const products = await response.json();
+
+                // ОЧИЩЕННЯ КОНТЕЙНЕРІВ
+                productContainers.forEach(container => {
+                    container.replaceChildren();
+                });
+
+                // ДОДАВАННЯ ТОВАРІВ
+                products.forEach(product => {
+
+                    const category = String(product.category || "")
+                        .trim()
+                        .toLocaleLowerCase("uk-UA");
+
+                    const container = Array.from(productContainers)
+                        .find(item =>
+                            item.dataset.category
+                                .trim()
+                                .toLocaleLowerCase("uk-UA") === category
+                        );
+
+                    if (!container) {
+                        console.warn(
+                            "Категорію не знайдено:",
+                            product.category
+                        );
+
+                        return;
+                    }
+
+                    const card = createProductCard(product);
+
+                    container.appendChild(card);
+
+                });
+
+                searchProducts();
+
+                if (products.length === 0) {
+                    searchMessage.textContent =
+                        "У каталозі поки немає товарів.";
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Помилка завантаження товарів:",
+                    error
+                );
+
+                searchMessage.textContent =
+                    "Не вдалося завантажити товари. Перевірте з'єднання із сервером.";
+
+            }
+        }
+
+
+        // ПОШУК І ФІЛЬТРАЦІЯ
+        function searchProducts() {
+
+            const query = searchInput.value
+                .trim()
+                .toLocaleLowerCase("uk-UA");
+
+            let visibleCount = 0;
+
+            productContainers.forEach(container => {
+
+                const category = container.dataset.category;
+
+                const heading = container.previousElementSibling;
+
+                const cards = container.querySelectorAll(".product-card");
+
+                let categoryVisible = false;
+
+                cards.forEach(card => {
+
+                    const name = (
+                        card.dataset.name || ""
+                    ).toLocaleLowerCase("uk-UA");
+
+                    const description = (
+                        card.dataset.info || ""
+                    ).toLocaleLowerCase("uk-UA");
+
+                    const matchesSearch =
+                        (name + " " + description).includes(query);
+
+                    const matchesCategory =
+                        selectedCategory === "all" ||
+                        selectedCategory === category;
+
+                    const visible =
+                        matchesSearch && matchesCategory;
+
+                    card.hidden = !visible;
+
+                    if (visible) {
+                        visibleCount++;
+                        categoryVisible = true;
+                    }
+
+                });
+
+                container.hidden = !categoryVisible;
+
+                if (heading) {
+                    heading.hidden = !categoryVisible;
+                }
+
+            });
+
+            if (query || selectedCategory !== "all") {
+
+                searchMessage.textContent = visibleCount > 0
+                    ? "Знайдено товарів: " + visibleCount
+                    : "Товарів не знайдено. Спробуйте інший пошук.";
+
+            } else {
+
+                searchMessage.textContent = "";
+
+            }
+
+        }
+
+
+        // ПЕРЕМИКАННЯ КАТЕГОРІЙ
+        categoryButtons.forEach(button => {
+
+            button.addEventListener("click", function () {
+
+                selectedCategory =
+                    this.dataset.category || "all";
+
+                categoryButtons.forEach(item => {
+                    item.classList.toggle(
+                        "active",
+                        item === this
+                    );
+                });
+
+                searchProducts();
+
+            });
+
+        });
+
+
+        // ПОШУК ПІД ЧАС ВВЕДЕННЯ
+        searchInput.addEventListener(
+            "input",
+            searchProducts
+        );
+
+
+        // ОЧИЩЕННЯ ПОШУКУ
+        clearSearchButton.addEventListener("click", function () {
+
+            searchInput.value = "";
+
+            selectedCategory = "all";
+
+            categoryButtons.forEach(button => {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.category === "all"
+                );
+
+            });
+
+            searchProducts();
+
+            searchInput.focus();
+
+        });
+
+
+        // ЗАПУСК ПІСЛЯ ЗАВАНТАЖЕННЯ HTML
+        document.addEventListener(
+            "DOMContentLoaded",
+            loadDatabaseProducts
+        );
+
+    </script>
+
+</body>
+</html>

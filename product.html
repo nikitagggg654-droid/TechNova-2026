@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Товар | TechNova</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="logo">
+            Tech<span>Nova</span>
+        </div>
+
+        <nav class="menu">
+
+            <a href="index.html">
+                Головна
+            </a>
+
+            <a href="index.html#catalog">
+                Каталог
+            </a>
+
+            <a href="index.html#contacts">
+                Контакти
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <main class="product-page">
+
+        <div class="product-page-image">
+
+            <img id="productImage"
+                 src=""
+                 alt="">
+
+        </div>
+
+
+        <div class="product-page-info">
+
+            <h1 id="productName">
+            </h1>
+
+            <div class="product-description"
+                 id="productDescription">
+            </div>
+
+            <h2 class="product-page-price"
+                id="productPrice">
+            </h2>
+
+
+            <h3>
+                Характеристики
+            </h3>
+
+            <ul class="product-specs"
+                id="productSpecs">
+            </ul>
+
+
+            <a href="index.html#catalog"
+               class="back-button">
+
+                ← Повернутися до каталогу
+
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        
+async function loadProduct() {
+    const params = new URLSearchParams(window.location.search);
+
+    // Поддержка товаров из базы: product.html?id=29
+    const databaseId = params.get("id");
+
+    // Поддержка старых товаров: product.html?product=iphone
+    const oldProductId = params.get("product");
+
+    const oldProducts = {
+        iphone: {
+            name: "iPhone 16 Pro",
+            specs: [
+                "Екран: 6.3\" OLED",
+                "Процесор: Apple A18 Pro",
+                "Оперативна пам'ять: 8 ГБ",
+                "Пам'ять: 256 ГБ",
+                "Камера: 48 Мп",
+                "Батарея: 3582 мА·год"
+            ]
+        },
+        samsung: {
+            name: "Samsung Galaxy S25",
+            specs: [
+                "Екран: 6.2\" AMOLED",
+                "Процесор: Snapdragon 8 Elite",
+                "Оперативна пам'ять: 12 ГБ",
+                "Пам'ять: 256 ГБ",
+                "Камера: 50 Мп",
+                "Батарея: 4000 мА·год"
+            ]
+        },
+        xiaomi: {
+            name: "Xiaomi 15",
+            specs: [
+                "Екран: 6.36\" AMOLED",
+                "Процесор: Snapdragon 8 Elite",
+                "Оперативна пам'ять: 12 ГБ",
+                "Пам'ять: 512 ГБ",
+                "Камера: 50 Мп",
+                "Батарея: 5240 мА·год"
+            ]
+        },
+        pixel: {
+            name: "Google Pixel 9",
+            specs: [
+                "Екран: 6.3\" OLED",
+                "Процесор: Google Tensor G4",
+                "Оперативна пам'ять: 12 ГБ",
+                "Пам'ять: 128 ГБ",
+                "Камера: 50 Мп",
+                "Батарея: 4700 мА·год"
+            ]
+        }
+    };
+
+    let product = null;
+
+    try {
+        if (databaseId) {
+            const response = await fetch("/api/products");
+
+            if (!response.ok) {
+                throw new Error("Не вдалося завантажити товари");
+            }
+
+            const products = await response.json();
+
+            product = products.find(
+                item => String(item.id) === String(databaseId)
+            );
+
+            if (product) {
+                product.specs = [
+                    "Категорія: " + product.category,
+                    "Ціна: " + Number(product.price).toLocaleString("uk-UA") + " грн",
+                    "Опис: " + (product.description || "Не вказано")
+                ];
+            }
+        } else if (oldProductId && oldProducts[oldProductId]) {
+            // Для старих товарів зберігаємо їхні назви й характеристики.
+            product = oldProducts[oldProductId];
+
+            const response = await fetch("/api/products");
+
+            if (response.ok) {
+                const products = await response.json();
+
+                const matchingProduct = products.find(
+                    item => item.name === product.name
+                );
+
+                if (matchingProduct) {
+                    product = {
+                        ...product,
+                        ...matchingProduct,
+                        specs: product.specs
+                    };
+                }
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
+    const nameElement = document.getElementById("productName");
+    const imageElement = document.getElementById("productImage");
+    const priceElement = document.getElementById("productPrice");
+    const descriptionElement = document.getElementById("productDescription");
+    const specsElement = document.getElementById("productSpecs");
+
+    if (!product) {
+        nameElement.textContent = "Товар не знайдено";
+        descriptionElement.textContent =
+            "Перейдіть до каталогу та виберіть товар.";
+        imageElement.removeAttribute("src");
+        priceElement.textContent = "";
+        specsElement.innerHTML = "";
+        return;
+    }
+
+    document.title = product.name + " | TechNova";
+    nameElement.textContent = product.name;
+
+    imageElement.src = product.image || "";
+    imageElement.alt = product.name;
+
+    priceElement.textContent =
+        Number.isFinite(Number(product.price))
+            ? Number(product.price).toLocaleString("uk-UA") + " грн"
+            : (product.price || "");
+
+    descriptionElement.textContent =
+        product.description || "Опис товару поки не додано.";
+
+    specsElement.innerHTML = "";
+
+    (product.specs || []).forEach(spec => {
+        const li = document.createElement("li");
+        const parts = spec.split(":");
+
+        if (parts.length > 1) {
+            const label = document.createElement("span");
+            label.textContent = parts[0] + ":";
+
+            li.appendChild(label);
+            li.appendChild(
+                document.createTextNode(" " + parts.slice(1).join(":"))
+            );
+        } else {
+            li.textContent = spec;
+        }
+
+        specsElement.appendChild(li);
+    });
+}
+
+loadProduct();
